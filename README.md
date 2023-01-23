@@ -13,19 +13,17 @@ O luvery apresenta um catálogo de produtos variados como comidas, salgados e do
 
 Para a implementação do projeto foram utilizadas as seguintes técnicas:
 * Jetpack Compose
+* Layouts utilizados:
+  - Column
+  - Row
+  - Box
+  - Image
+  - Text
 * Kotlin
 * Activity
-* Composables
-  -Layout (Column, Row e Box)
-  -Image
-  -Text
-* Modifier
+  
 * Separação de componentes e telas
 * Reutilização de composables
-
-# 📁 Acesso ao projeto
-
-Você pode acessar o código fonte do projeto inicial [aqui](https://github.com/lueny-dantas/luvery) ou baixá-lo.
 
 # 🛠️ Abrir e rodar o projeto
 
