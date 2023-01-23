@@ -1,31 +1,37 @@
 # luvery
-App de entrega de comidas e bebidas em geral.
+Esse projeto simula um aplicativo de entrega de comidas delivery.
 
-🔨 Funcionalidades do projeto
-O Aluvery apresenta um catálogo de produtos variados como comidas, doces, bebidas etc
+# 🔨 Funcionalidades do projeto
+O luvery apresenta um catálogo de produtos variados como comidas, salgados e doces etc
 
-aluvery-final-project-with-products
+# ✨Ilustração
 
-✔️ Técnicas e tecnologias utilizadas
+
+# ✔️ Técnicas e tecnologias utilizadas
+
+
 Para a implementação do projeto foram utilizadas as seguintes técnicas:
+* Jetpack Compose
+* Kotlin
+* Activity
+* Composables
+  -Layout (Column, Row e Box)
+  -Image
+  -Text
+* Modifier
+* Separação de componentes e telas
+* Reutilização de composables
 
-Jetpack Compose
-Kotlin
-Activity
-Composables
-Layout (Column, Row e Box)
-Image
-Text
-Modifier
-Separação de componentes e telas
-Reutilização de composables
-📁 Acesso ao projeto
-Você pode acessar o código fonte do projeto ou baixá-lo.
+# 📁 Acesso ao projeto
 
-🛠️ Abrir e rodar o projeto
+Você pode acessar o código fonte do projeto inicial [aqui](https://github.com/lueny-dantas/luvery) ou baixá-lo.
+
+# 🛠️ Abrir e rodar o projeto
+
 Após baixar o projeto, você pode abrir com o Android Studio. Para isso, na tela de launcher clique em:
 
-Open an Existing Project (ou alguma opção similar)
-Procure o local onde o projeto está e o selecione (Caso o projeto seja baixado via zip, é necessário extraí-lo antes de procurá-lo)
-Por fim clique em OK
-O Android Studio deve executar algumas tasks do Gradle para configurar o projeto, aguarde até finalizar. Ao finalizar as tasks, você pode executar o App 🏆
+* Open an Existing Project (ou alguma opção similar)
+* Procure o local onde o projeto está e o selecione (Caso o projeto seja baixado via zip, é necessário extraí-lo antes de procurá-lo)
+* Por fim clique em OK
+
+O Android Studio deve executar algumas tasks do Gradle para configurar o projeto, aguarde até finalizar. Ao finalizar as tasks, você pode executar o App.
