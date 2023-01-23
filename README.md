@@ -5,6 +5,7 @@ Esse projeto simula um aplicativo de entrega de comidas delivery.
 O luvery apresenta um catálogo de produtos variados como comidas, salgados e doces etc
 
 # ✨Ilustração
+![ezgif com-gif-maker (11)](https://user-images.githubusercontent.com/98789294/214149755-a8173cb9-5b3b-4a59-9dcb-b89d2c845a25.gif)
 
 
 # ✔️ Técnicas e tecnologias utilizadas
