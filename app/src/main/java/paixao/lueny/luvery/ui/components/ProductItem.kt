@@ -1,17 +1,19 @@
 package paixao.lueny.luvery.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.R
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -19,11 +21,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import paixao.lueny.luvery.R.drawable
 import paixao.lueny.luvery.ui.extensions.toBrazilianCurrency
 import paixao.lueny.luvery.ui.model.Product
-import paixao.lueny.luvery.ui.theme.Purple500
-import paixao.lueny.luvery.ui.theme.Teal200
+import paixao.lueny.luvery.ui.theme.LuveryTheme
 import java.math.BigDecimal
 
 @Composable
@@ -43,19 +45,24 @@ fun ProductItem(product: Product) {
                     .height(imageSize)
                     .background(
                         brush = Brush.horizontalGradient(
-                            colors = listOf(Purple500, Teal200)
+                            colors = listOf(
+                                MaterialTheme.colors.primary,
+                                MaterialTheme.colors.secondary
+                            )
                         )
                     )
                     .fillMaxWidth()
             ) {
-                Image(
-                    painter = painterResource(id = product.image),
+                AsyncImage(
+                    model = product.image,
                     contentDescription = "Imagem do Produto",
                     Modifier
                         .size(imageSize)
                         .offset(y = imageSize / 2)
                         .clip(shape = CircleShape)
-                        .align(Alignment.BottomCenter)
+                        .align(Alignment.BottomCenter),
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = drawable.placeholder)
                 )
             }
             Spacer(modifier = Modifier.height(imageSize / 2))
@@ -82,11 +89,15 @@ fun ProductItem(product: Product) {
 @Preview(showBackground = true)
 @Composable
 private fun ProductItemPreview() {
-    ProductItem(
-        Product(
-            name = LoremIpsum(50).values.first(),
-            price = BigDecimal("14.99"),
-            image = drawable.placeholder
-        )
-    )
+    LuveryTheme {
+        Surface {
+            ProductItem(
+                Product(
+                    name = LoremIpsum(50).values.first(),
+                    price = BigDecimal("14.99")
+                )
+            )
+        }
+    }
+
 }
