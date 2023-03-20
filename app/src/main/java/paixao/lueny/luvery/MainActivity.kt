@@ -6,7 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import paixao.lueny.luvery.ui.components.HomeScreen
+import paixao.lueny.luvery.ui.sampledata.sampleProducts
 import paixao.lueny.luvery.ui.sampledata.sampleSections
+import paixao.lueny.luvery.ui.screens.AllProductsScreens
 import paixao.lueny.luvery.ui.theme.LuveryTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,12 +25,11 @@ class MainActivity : ComponentActivity() {
 fun App() {
     LuveryTheme {
         Surface {
-            HomeScreen(
-                sampleSections
-            )
-            }
+           HomeScreen(sampleSections)
+//            AllProductsScreens(products = sampleProducts)
         }
     }
+}
 
 
 
