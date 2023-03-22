@@ -1,4 +1,4 @@
-package paixao.lueny.luvery
+package paixao.lueny.luvery.ui.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,20 +13,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            App()
+            LuveryTheme {
+                Surface {
+                    HomeScreen(sampleSections)
+                }
+            }
         }
     }
 }
 
-
-@Composable
-fun App() {
-    LuveryTheme {
-        Surface {
-           HomeScreen(sampleSections)
-        }
-    }
-}
 
 
 

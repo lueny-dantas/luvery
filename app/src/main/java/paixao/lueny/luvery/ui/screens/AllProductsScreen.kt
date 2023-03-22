@@ -36,6 +36,6 @@ fun AllProductsScreens(products: List<Product>) {
 
 @Preview(showBackground = true)
 @Composable
-fun AllProductrsScreensPreview(){
+fun AllProductsScreensPreview(){
     AllProductsScreens(products = sampleProducts)
 }
