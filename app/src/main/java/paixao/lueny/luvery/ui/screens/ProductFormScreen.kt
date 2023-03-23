@@ -1,26 +1,37 @@
 package paixao.lueny.luvery.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import paixao.lueny.luvery.R
+import paixao.lueny.luvery.ui.model.Product
 import paixao.lueny.luvery.ui.theme.LuveryTheme
+import java.math.BigDecimal
+
 
 @Composable
 fun ProductFormScreen() {
     Column(
         Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(horizontal = 16.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-
+        Spacer(modifier = Modifier)
         Text(
             text = "Criando o produto",
             Modifier.fillMaxWidth(),
@@ -29,6 +40,17 @@ fun ProductFormScreen() {
 
         var url by remember { mutableStateOf("") }
 
+        if (url.isNotBlank()){
+            AsyncImage(
+                model = url, contentDescription = null,
+                Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(id = R.drawable.placeholder),
+                error = painterResource(id = R.drawable.placeholder)
+            )
+        }
         TextField(value = url,
             onValueChange = { url = it },
             Modifier.fillMaxWidth(),
@@ -60,11 +82,26 @@ fun ProductFormScreen() {
         )
 
         Button(
-            onClick = { /*TODO*/ },
-            Modifier.fillMaxWidth())
+            onClick = {
+                val convertedPrice = try {
+                    BigDecimal(price)
+                } catch (e: NumberFormatException) {
+                    BigDecimal.ZERO
+                }
+                val product = Product(
+                    name = name,
+                    image = url,
+                    price = convertedPrice,
+                    description = description
+                )
+                Log.i("ProductFormActivity", "ProductFormScreen: $product")
+            },
+            Modifier.fillMaxWidth()
+        )
         {
             Text(text = "Salvar")
         }
+        Spacer(modifier = Modifier)
     }
 }
 
