@@ -24,7 +24,7 @@ import java.math.BigDecimal
 
 
 @Composable
-fun ProductFormScreen() {
+fun ProductFormScreen(onSaveClick:(Product)-> Unit = {}) {
     Column(
         Modifier
             .fillMaxSize()
@@ -140,6 +140,7 @@ fun ProductFormScreen() {
                     description = description
                 )
                 Log.i("ProductFormActivity", "ProductFormScreen: $product")
+                onSaveClick(product)
             },
             Modifier.fillMaxWidth()
         )
