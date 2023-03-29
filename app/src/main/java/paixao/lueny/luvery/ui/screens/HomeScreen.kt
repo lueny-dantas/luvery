@@ -8,38 +8,33 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import paixao.lueny.luvery.stateHolders.HomeScreenUiState
 import paixao.lueny.luvery.ui.components.CardProductItem
 import paixao.lueny.luvery.ui.components.ProductsSection
 import paixao.lueny.luvery.ui.components.SearchTextField
 import paixao.lueny.luvery.ui.model.Product
-import paixao.lueny.luvery.ui.sampledata.sampleProducts
 import paixao.lueny.luvery.ui.sampledata.sampleSections
 import paixao.lueny.luvery.ui.theme.LuveryTheme
 
 @Composable
-fun HomeScreen(sections: Map<String, List<Product>>, searchText: String = "") {
+fun HomeScreen(
+    sections: Map<String, List<Product>>,
+    state: HomeScreenUiState = HomeScreenUiState()
+) {
 
     Column {
 
-        var text by remember { mutableStateOf(searchText) }
+        val text = state.text
+        val searchedProducts = remember(text) { state.searchedProducts }
+
         SearchTextField(
-            searchText = text,
-            onSearchChange = {
-                text = it
-            },
+            searchText = state.text,
+            onSearchChange = state.onSearchChange,
             Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
         )
 
-        val searchedProducts = remember(text) {
-            if (text.isNotBlank()) {
-                sampleProducts.filter { product ->
-                    product.name.contains(text, ignoreCase = true) ||
-                            product.description?.contains(text, ignoreCase = true) ?: false
-                }
-            } else emptyList()
-        }
 
         LazyColumn(
             Modifier
@@ -47,7 +42,7 @@ fun HomeScreen(sections: Map<String, List<Product>>, searchText: String = "") {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
-            if (text.isBlank()) {
+            if (state.isShowSections()) {
                 for (section in sections) {
                     val title = section.key
                     val products = section.value
@@ -77,7 +72,7 @@ fun HomeScreen(sections: Map<String, List<Product>>, searchText: String = "") {
 fun HomeScreenPreview() {
     LuveryTheme {
         Surface {
-            HomeScreen(sampleSections)
+            HomeScreen(sections = sampleSections, state = HomeScreenUiState("a"))
         }
     }
 }
