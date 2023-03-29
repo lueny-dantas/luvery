@@ -13,28 +13,69 @@ import paixao.lueny.luvery.ui.components.CardProductItem
 import paixao.lueny.luvery.ui.components.ProductsSection
 import paixao.lueny.luvery.ui.components.SearchTextField
 import paixao.lueny.luvery.ui.model.Product
-import paixao.lueny.luvery.ui.sampledata.sampleSections
+import paixao.lueny.luvery.ui.sampledata.*
 import paixao.lueny.luvery.ui.theme.LuveryTheme
 
 @Composable
-fun HomeScreen(
-    sections: Map<String, List<Product>>,
-    state: HomeScreenUiState = HomeScreenUiState()
-) {
+fun HomeScreen(products: List<Product>) {
+
+    val sections = mapOf(
+        "Todos produtos" to products,
+        "Promoções" to sampleDrinks + sampleCandies,
+        "Salgados" to sampleSavory,
+        "Doces" to sampleCandies,
+        "Sobremesas" to sampleDesserts,
+        "Bebidas" to sampleDrinks
+    )
+    var text by remember {
+        mutableStateOf("")
+    }
+
+    fun containsInNameOrDescrioption() = { product: Product ->
+        product.name.contains(
+            text,
+            ignoreCase = true,
+        ) || product.description?.contains(
+            text,
+            ignoreCase = true,
+        ) ?: false
+    }
+
+    val searchedProducts = remember(text, products) {
+        if (text.isNotBlank()) {
+            sampleProducts.filter(containsInNameOrDescrioption()) +
+                    products.filter(containsInNameOrDescrioption())
+        } else emptyList()
+    }
+
+    val state = remember(products, text) {
+        HomeScreenUiState(
+            sections = sections,
+            searchedProducts = searchedProducts,
+            searchText = text,
+            onSearchChange = {
+                text = it
+            }
+        )
+    }
+    HomeScreen(state = state)
+}
+
+@Composable
+fun HomeScreen (state: HomeScreenUiState = HomeScreenUiState()) {
 
     Column {
-
-        val text = state.text
+        val sections  = state.sections
+        val text = state.searchText
         val searchedProducts = remember(text) { state.searchedProducts }
 
         SearchTextField(
-            searchText = state.text,
+            searchText = state.searchText,
             onSearchChange = state.onSearchChange,
             Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
         )
-
 
         LazyColumn(
             Modifier
@@ -66,13 +107,27 @@ fun HomeScreen(
     }
 }
 
+@Preview(showSystemUi = true)
+@Composable
+private fun HomeScreenPreview() {
+    LuveryTheme {
+        Surface {
+            HomeScreen(HomeScreenUiState(sections = sampleSections))
+        }
+    }
+}
 
 @Preview(showSystemUi = true)
 @Composable
-fun HomeScreenPreview() {
+fun HomeScreenWithSearchTextPreview() {
     LuveryTheme {
         Surface {
-            HomeScreen(sections = sampleSections, state = HomeScreenUiState("a"))
+            HomeScreen(
+                state = HomeScreenUiState(
+                sections = sampleSections,
+                searchText = " a"
+                )
+            )
         }
     }
 }

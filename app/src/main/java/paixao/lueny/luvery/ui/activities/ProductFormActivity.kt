@@ -17,10 +17,11 @@ class ProductFormActivity : ComponentActivity() {
         setContent {
             LuveryTheme {
                 Surface {
-                    ProductFormScreen(onSaveClick = { product ->
-                        dao.save(product)
-                        finish()
-                    })
+                    ProductFormScreen(
+                        onSaveClick = { product ->
+                            dao.save(product)
+                            finish()
+                        })
                 }
             }
         }

@@ -37,7 +37,12 @@ fun MainScreen(
 @Preview
 @Composable
 fun MainScreenPreview() {
-    MainScreen{
-        HomeScreen(sections = sampleSections, state = HomeScreenUiState("a"))
+    MainScreen {
+        HomeScreen(
+            state = HomeScreenUiState(
+                searchText = "a",
+                sections = sampleSections
+            )
+        )
     }
 }
