@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -13,52 +12,14 @@ import paixao.lueny.luvery.stateHolders.HomeScreenUiState
 import paixao.lueny.luvery.ui.components.CardProductItem
 import paixao.lueny.luvery.ui.components.ProductsSection
 import paixao.lueny.luvery.ui.components.SearchTextField
-import paixao.lueny.luvery.ui.model.Product
 import paixao.lueny.luvery.ui.sampledata.*
 import paixao.lueny.luvery.ui.theme.LuveryTheme
+import paixao.lueny.luvery.ui.viewmodels.HomeScreenViewModel
 
 @Composable
-fun HomeScreen(products: List<Product>) {
+fun HomeScreen( viewModel: HomeScreenViewModel) {
 
-    val sections = mapOf(
-        "Todos produtos" to products,
-        "Promoções" to sampleDrinks + sampleCandies,
-        "Salgados" to sampleSavory,
-        "Doces" to sampleCandies,
-        "Sobremesas" to sampleDesserts,
-        "Bebidas" to sampleDrinks
-    )
-    var text by rememberSaveable {
-        mutableStateOf("")
-    }
-
-    fun containsInNameOrDescrioption() = { product: Product ->
-        product.name.contains(
-            text,
-            ignoreCase = true,
-        ) || product.description?.contains(
-            text,
-            ignoreCase = true,
-        ) ?: false
-    }
-
-    val searchedProducts = remember(text, products) {
-        if (text.isNotBlank()) {
-            sampleProducts.filter(containsInNameOrDescrioption()) +
-                    products.filter(containsInNameOrDescrioption())
-        } else emptyList()
-    }
-
-    val state = remember(products, text) {
-        HomeScreenUiState(
-            sections = sections,
-            searchedProducts = searchedProducts,
-            searchText = text,
-            onSearchChange = {
-                text = it
-            }
-        )
-    }
+    val state = viewModel.uiState
     HomeScreen(state = state)
 }
 
