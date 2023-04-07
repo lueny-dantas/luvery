@@ -1,11 +1,9 @@
 package paixao.lueny.luvery.dao
 
-import androidx.compose.runtime.mutableStateListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import paixao.lueny.luvery.ui.model.Product
-import paixao.lueny.luvery.ui.sampledata.sampleProducts
 
 class ProductDao {
 

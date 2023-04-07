@@ -22,55 +22,22 @@ import paixao.lueny.luvery.R
 import paixao.lueny.luvery.stateHolders.ProductFormUiState
 import paixao.lueny.luvery.ui.model.Product
 import paixao.lueny.luvery.ui.theme.LuveryTheme
+import paixao.lueny.luvery.ui.viewmodels.ProductFormScreenViewModel
 import java.math.BigDecimal
 import java.text.DecimalFormat
 
 @Composable
-fun ProductFormScreen(onSaveClick: (Product) -> Unit = {}) {
-    var name by rememberSaveable { mutableStateOf("") }
-    var url by rememberSaveable { mutableStateOf("") }
-    var price by rememberSaveable { mutableStateOf("") }
-    var description by rememberSaveable { mutableStateOf("") }
-    val formatter = remember { DecimalFormat("#.##") }
+fun ProductFormScreen(
+    viewModel: ProductFormScreenViewModel,
+    onSaveClick: () -> Unit = {}
+) {
+    val state by viewModel.uiState.collectAsState()
 
     ProductFormScreen(
-        state = ProductFormUiState(
-            url = url,
-            name = name,
-            price = price,
-            description = description,
-            onUrlChange = {
-                url = it
-            },
-            onNameChange = {
-                name = it
-            },
-            onPriceChange = {
-                try {
-                    price = formatter.format(BigDecimal(it))
-                } catch (e: IllegalArgumentException) {
-                    if (it.isBlank()) {
-                        price = it
-                    }
-                }
-            },
-            onDescriptionChange = {
-                description = it
-            }
-        ),
+        state = state,
         onSaveClick = {
-            val convertedPrice = try {
-                BigDecimal(price)
-            } catch (e: NumberFormatException) {
-                BigDecimal.ZERO
-            }
-            val product = Product(
-                name = name,
-                image = url,
-                price = convertedPrice,
-                description = description
-            )
-            onSaveClick(product)
+            viewModel.save()
+            onSaveClick()
         }
     )
 }

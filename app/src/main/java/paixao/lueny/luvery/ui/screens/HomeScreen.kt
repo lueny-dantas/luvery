@@ -19,7 +19,7 @@ import paixao.lueny.luvery.ui.viewmodels.HomeScreenViewModel
 @Composable
 fun HomeScreen( viewModel: HomeScreenViewModel) {
 
-    val state = viewModel.uiState
+    val state by viewModel.uiState.collectAsState()
     HomeScreen(state = state)
 }
 

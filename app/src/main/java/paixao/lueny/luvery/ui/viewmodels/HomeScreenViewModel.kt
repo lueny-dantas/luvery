@@ -1,11 +1,10 @@
 package paixao.lueny.luvery.ui.viewmodels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import paixao.lueny.luvery.dao.ProductDao
 import paixao.lueny.luvery.stateHolders.HomeScreenUiState
@@ -16,22 +15,28 @@ class HomeScreenViewModel : ViewModel() {
 
     private val dao = ProductDao()
 
-    var uiState: HomeScreenUiState by mutableStateOf(
-        HomeScreenUiState(
-            onSearchChange = {
-                uiState = uiState.copy(
-                    searchText = it,
-                    searchedProducts = searchedProducts(it)
-                )
-            }
+    private val _uiState: MutableStateFlow<HomeScreenUiState> =
+        MutableStateFlow(
+            HomeScreenUiState()
         )
-    )
-        private set
+    val uiState get() = _uiState.asStateFlow()
 
     init {
+        _uiState.update { currentState ->
+            currentState.copy(
+                onSearchChange = {
+                    _uiState.value = _uiState.value.copy(
+                        searchText = it,
+                        searchedProducts = searchedProducts(it)
+                    )
+                }
+            )
+
+        }
+
         viewModelScope.launch {
             dao.productsDao().collect { products ->
-                uiState = uiState.copy(
+                _uiState.value = _uiState.value.copy(
                     sections = mapOf(
                         "Todos produtos" to products,
                         "Promoções" to sampleDrinks + sampleCandies,
@@ -39,7 +44,8 @@ class HomeScreenViewModel : ViewModel() {
                         "Doces" to sampleCandies,
                         "Sobremesas" to sampleDesserts,
                         "Bebidas" to sampleDrinks
-                    )
+                    ),
+                    searchedProducts = searchedProducts(_uiState.value.searchText)
                 )
             }
         }
