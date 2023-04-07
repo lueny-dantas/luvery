@@ -4,6 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import paixao.lueny.luvery.dao.ProductDao
 import paixao.lueny.luvery.stateHolders.HomeScreenUiState
 import paixao.lueny.luvery.ui.model.Product
@@ -15,14 +18,6 @@ class HomeScreenViewModel : ViewModel() {
 
     var uiState: HomeScreenUiState by mutableStateOf(
         HomeScreenUiState(
-            sections = mapOf(
-                "Todos produtos" to dao.productsDao(),
-                "Promoções" to sampleDrinks + sampleCandies,
-                "Salgados" to sampleSavory,
-                "Doces" to sampleCandies,
-                "Sobremesas" to sampleDesserts,
-                "Bebidas" to sampleDrinks
-            ),
             onSearchChange = {
                 uiState = uiState.copy(
                     searchText = it,
@@ -33,6 +28,22 @@ class HomeScreenViewModel : ViewModel() {
     )
         private set
 
+    init {
+        viewModelScope.launch {
+            dao.productsDao().collect { products ->
+                uiState = uiState.copy(
+                    sections = mapOf(
+                        "Todos produtos" to products,
+                        "Promoções" to sampleDrinks + sampleCandies,
+                        "Salgados" to sampleSavory,
+                        "Doces" to sampleCandies,
+                        "Sobremesas" to sampleDesserts,
+                        "Bebidas" to sampleDrinks
+                    )
+                )
+            }
+        }
+    }
 
     private fun containsInNameOrDescription(text: String) = { product: Product ->
         product.name.contains(
@@ -47,7 +58,7 @@ class HomeScreenViewModel : ViewModel() {
     private fun searchedProducts(text: String): List<Product> =
         if (text.isNotBlank()) {
             sampleProducts.filter(containsInNameOrDescription(text)) +
-                    dao.productsDao().filter(containsInNameOrDescription(text))
+                    dao.productsDao().value.filter(containsInNameOrDescription(text))
         } else emptyList()
 }
 

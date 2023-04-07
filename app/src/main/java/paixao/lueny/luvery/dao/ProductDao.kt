@@ -1,18 +1,21 @@
 package paixao.lueny.luvery.dao
 
 import androidx.compose.runtime.mutableStateListOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import paixao.lueny.luvery.ui.model.Product
 import paixao.lueny.luvery.ui.sampledata.sampleProducts
 
 class ProductDao {
 
-    companion object{
-        private val products = mutableStateListOf<Product>()
+    companion object {
+        private val products = MutableStateFlow<List<Product>>(emptyList())
     }
 
-    fun productsDao() = products.toList()
+    fun productsDao():StateFlow<List<Product>> = products.asStateFlow()
 
-    fun save( product: Product){
-        products.add(product)
+    fun save(product: Product) {
+        products.value = products.value + product
     }
 }
